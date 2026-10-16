@@ -309,3 +309,28 @@ TEST(TBitField, bitfields_with_different_bits_are_not_equal)
 
   EXPECT_NE(bf1, bf2);
 }
+
+// more tests
+
+TEST(TBitField, test_of_bit_invers) {
+  TBitField a(42);
+  TBitField b(42);
+  a.SetBit(21);
+  b = ~a;
+  b = ~b;
+  EXPECT_EQ(b, a);
+  EXPECT_EQ(a, ~~a);
+}
+
+TEST(TBitField, repeated_clear_and_chained_operations) {
+  TBitField a(5), b(5), c(5);
+  a.SetBit(0);
+  b.SetBit(1);
+  c.SetBit(2);
+  TBitField result = a | b | c;
+  EXPECT_EQ(1, result.GetBit(0));
+  EXPECT_EQ(1, result.GetBit(1));
+  EXPECT_EQ(1, result.GetBit(2));
+  a.ClrBit(0);
+  EXPECT_EQ(0, a.GetBit(0));
+}
